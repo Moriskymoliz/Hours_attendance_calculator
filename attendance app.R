@@ -468,8 +468,13 @@ server <- function(input, output, session) {
         employees<-employees[grepl("Active",Status)] # to get active employees
         shift[, Date := as.IDate(`Start Date`,format = "%d-%m-%Y")]
         biometric[, Date := as.IDate(Date,format = "%d-%m-%Y")]
-        leave[, `:=`(Start_Date = as.IDate(`From Date`,format = "%d-%m-%Y"),
-                     End_Date = as.IDate(`To Date`,format = "%d-%m-%Y"))]
+        
+        leave[, `:=`(
+          Start_Date = as.IDate(dmy(`From Date`)),
+          End_Date = as.IDate(dmy(`To Date`))
+        )]
+        #leave[, `:=`(Start_Date = as.IDate(`From Date`,format = "%d-%m-%Y"),
+        #  End_Date = as.IDate(`To Date`,format = "%d-%m-%Y"))]
         
         #format employee Id
         incProgress(0.1, detail = "Formatting employee IDs...")
